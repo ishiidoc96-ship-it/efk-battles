@@ -7,8 +7,17 @@ export default function RegisterPage() {
   const [error, setError] = useState('');
   const [txId, setTxId] = useState('');
   const [form, setForm] = useState({ gamer_tag: '', ef_id: '', phone: '' });
+  const [spotsLeft, setSpotsLeft] = useState(null);
+  const [playerName, setPlayerName] = useState('');
 
   const update = (f) => (e) => setForm({ ...form, [f]: e.target.value });
+
+  useEffect(() => {
+    fetch('/api/tournament/current')
+      .then(r => r.json())
+      .then(d => setSpotsLeft((d.maxPlayers || 32) - (d.paidCount || 0)))
+      .catch(() => {});
+  }, []);
 
   const SAFARICIM_RE = /^(07[01245689]\d{7}|011\d{7})$/;
 
@@ -27,6 +36,7 @@ export default function RegisterPage() {
       const pay = await fetch('/api/pay', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ player_id: regData.player.id }) });
       const payData = await pay.json();
       if (!pay.ok) throw new Error(payData.error);
+      setPlayerName(form.gamer_tag);
       setTxId(payData.transactionId);
       setStep('poll');
     } catch (err) { setError(err.message); setStep('form'); }
@@ -35,18 +45,43 @@ export default function RegisterPage() {
   if (step === 'poll') return <PollingScreen txId={txId} />;
   if (step === 'done') return (
     <div className="container" style={{ paddingTop: '80px', textAlign: 'center' }}>
-      <h1 style={{ fontSize: '28px', fontWeight: 700, marginBottom: '12px' }}>Payment confirmed</h1>
+      <div style={{ width: '64px', height: '64px', borderRadius: '50%', background: '#E8F5E9', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 24px' }}>
+        <span style={{ fontSize: '32px', color: '#2E7D32' }}>&#10003;</span>
+      </div>
+      <h1 style={{ fontSize: '28px', fontWeight: 700, marginBottom: '12px' }}>You&apos;re locked in!</h1>
       <p style={{ color: 'var(--text-secondary)', marginBottom: '24px' }}>Check WhatsApp for your fixture. Game tonight at 8PM.</p>
-      <a href="/live" className="btn-primary">View bracket</a>
+      <div style={{ display: 'flex', gap: '12px', justifyContent: 'center', marginBottom: '32px' }}>
+        <a href="/live" className="btn-primary" style={{ padding: '12px 24px' }}>View bracket</a>
+        <a href="/" className="btn-secondary" style={{ padding: '12px 24px' }}>Home</a>
+      </div>
+      <div className="share-box">
+        <p style={{ fontSize: '14px', fontWeight: 600, marginBottom: '8px' }}>Know someone who plays eFootball?</p>
+        <p style={{ fontSize: '13px', color: 'var(--text-secondary)', marginBottom: '16px' }}>Send them this link so they can register too:</p>
+        <a
+          href={`https://wa.me/?text=${encodeURIComponent(`I just registered for EFK Battles! 1v1 eFootball tournament, KES 100 entry, winner takes KES 1,600. Register here: https://efk-battles.vercel.app/register`)}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="whatsapp-share-btn"
+        >
+          Share on WhatsApp
+        </a>
+      </div>
     </div>
   );
 
   return (
     <div className="container" style={{ maxWidth: '520px', paddingTop: '40px', paddingBottom: '64px' }}>
       <h1 style={{ fontSize: '28px', fontWeight: 700, marginBottom: '8px' }}>Join EFK Battles</h1>
-      <p style={{ fontSize: '14px', color: 'var(--text-secondary)', marginBottom: '8px' }}>
-        KES 100 entry. Winner takes KES 1,600. 32 players, single elimination.
-      </p>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '8px' }}>
+        <p style={{ fontSize: '14px', color: 'var(--text-secondary)' }}>
+          KES 100 entry. Winner takes KES 1,600.
+        </p>
+        {spotsLeft !== null && spotsLeft > 0 && (
+          <span style={{ fontSize: '12px', fontWeight: 600, color: spotsLeft <= 10 ? '#D84315' : 'var(--green)', background: spotsLeft <= 10 ? '#FBE9E7' : '#E8F5E9', padding: '4px 10px', borderRadius: '100px' }}>
+            {spotsLeft <= 5 ? `Only ${spotsLeft} left!` : `${spotsLeft} spots left`}
+          </span>
+        )}
+      </div>
       <p style={{ fontSize: '13px', color: 'var(--text-muted)', marginBottom: '32px' }}>
         New to this? Read the <a href="/how-to-play" style={{ textDecoration: 'underline', textUnderlineOffset: '2px' }}>step-by-step guide</a> first.
       </p>
@@ -71,7 +106,14 @@ export default function RegisterPage() {
           </p>
         </div>
         {error && <p style={{ fontSize: '13px', color: '#D84315', marginBottom: '16px' }}>{error}</p>}
-        <button type="submit" className="form-btn">Pay KES 100 with M-Pesa</button>
+        <button type="submit" className="form-btn">
+          {spotsLeft !== null && spotsLeft <= 10 ? `Pay KES 100, ${spotsLeft} spots left` : 'Pay KES 100 with M-Pesa'}
+        </button>
+        {spotsLeft !== null && spotsLeft <= 10 && (
+          <p style={{ fontSize: '12px', color: '#D84315', textAlign: 'center', marginTop: '8px', fontWeight: 500 }}>
+            This tournament sells out fast. Lock your spot now.
+          </p>
+        )}
       </form>
 
       <div style={{ marginTop: '24px', padding: '16px', background: 'var(--surface-alt)', borderRadius: '10px', border: '1px solid var(--border)' }}>
@@ -107,12 +149,24 @@ function PollingScreen({ txId }) {
       <div style={{ width: '64px', height: '64px', borderRadius: '50%', background: '#E8F5E9', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 24px' }}>
         <span style={{ fontSize: '32px', color: '#2E7D32' }}>&#10003;</span>
       </div>
-      <h1 style={{ fontSize: '28px', fontWeight: 700, marginBottom: '12px' }}>Payment confirmed</h1>
-      <p style={{ color: 'var(--text-secondary)', marginBottom: '8px' }}>You&apos;re in! Check WhatsApp for your fixture details.</p>
+      <h1 style={{ fontSize: '28px', fontWeight: 700, marginBottom: '12px' }}>You&apos;re locked in!</h1>
+      <p style={{ color: 'var(--text-secondary)', marginBottom: '8px' }}>Check WhatsApp for your fixture details.</p>
       <p style={{ color: 'var(--text-muted)', fontSize: '13px', marginBottom: '24px' }}>Bracket generates when 32 players pay.</p>
-      <div style={{ display: 'flex', gap: '12px', justifyContent: 'center' }}>
+      <div style={{ display: 'flex', gap: '12px', justifyContent: 'center', marginBottom: '32px' }}>
         <a href="/live" className="btn-primary" style={{ padding: '12px 24px' }}>View bracket</a>
         <a href="/" className="btn-secondary" style={{ padding: '12px 24px' }}>Home</a>
+      </div>
+      <div className="share-box">
+        <p style={{ fontSize: '14px', fontWeight: 600, marginBottom: '8px' }}>Know someone who plays eFootball?</p>
+        <p style={{ fontSize: '13px', color: 'var(--text-secondary)', marginBottom: '16px' }}>Send them this link so they can register too:</p>
+        <a
+          href={`https://wa.me/?text=${encodeURIComponent(`I just registered for EFK Battles! 1v1 eFootball tournament, KES 100 entry, winner takes KES 1,600. Register here: https://efk-battles.vercel.app/register`)}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="whatsapp-share-btn"
+        >
+          Share on WhatsApp
+        </a>
       </div>
     </div>
   );

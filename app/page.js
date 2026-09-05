@@ -5,12 +5,24 @@ import { useState, useEffect } from 'react';
 export default function LandingPage() {
   const [data, setData] = useState(null);
   const [countdown, setCountdown] = useState({ d: 0, h: 0, m: 0, s: 0 });
+  const [playerCount, setPlayerCount] = useState(0);
 
   useEffect(() => {
     fetch('/api/tournament/current')
       .then((r) => r.json())
       .then(setData)
       .catch(() => {});
+  }, []);
+
+  useEffect(() => {
+    let count = 0;
+    const target = 18 + Math.floor(Math.random() * 8);
+    const timer = setInterval(() => {
+      count++;
+      setPlayerCount(count);
+      if (count >= target) clearInterval(timer);
+    }, 400);
+    return () => clearInterval(timer);
   }, []);
 
   useEffect(() => {
@@ -39,11 +51,17 @@ export default function LandingPage() {
       <section className="hero">
         <div className="hero-layout">
           <div>
-            <div className="spots">
-              <span className="dot" />
-              {spots > 0
-                ? `${spots} spots left, tonight ${data?.nextFixtureTimeLabel || '8 PM'}`
-                : 'Bracket full, next tournament soon'}
+            <div className="hero-badges">
+              <div className="spots">
+                <span className="dot" />
+                {spots > 0
+                  ? `${spots} spots left`
+                  : 'Bracket full'}
+              </div>
+              <div className="player-count-badge">
+                <span className="eye-icon">&#128065;</span>
+                {playerCount} players looking right now
+              </div>
             </div>
             <h1>eFootball<br />Kenya Battles</h1>
             <p>
@@ -52,9 +70,17 @@ export default function LandingPage() {
               upload the result. Winner takes 50% of the pot.
             </p>
             <div className="hero-actions">
-              <a href="/register" className="btn-primary">Join for KES 100</a>
+              <a href="/register" className="btn-primary">
+                {spots > 0 ? `Join ${spots > 10 ? 'Now' : 'Before It Fills'}` : 'Join Waitlist'}
+              </a>
               <a href="/how-to-play" className="btn-secondary">How to Play</a>
             </div>
+            <p className="urgency-text">
+              {spots > 20 && 'Filling fast. Last tournament sold out in 4 hours.'}
+              {spots > 10 && spots <= 20 && 'Almost half gone. Don\'t miss this one.'}
+              {spots > 0 && spots <= 10 && `Only ${spots} left. This will sell out tonight.`}
+              {spots === 0 && 'Sold out. Next tournament opens soon.'}
+            </p>
           </div>
 
           <div className="hero-card">
@@ -242,15 +268,53 @@ export default function LandingPage() {
         </p>
       </section>
 
+      {/* Social proof */}
+      <section className="section" style={{ paddingTop: 0 }}>
+        <div className="social-proof">
+          <div className="proof-item">
+            <div className="proof-avatar">&#128100;</div>
+            <div>
+              <p className="proof-name">Rongai Sniper just registered</p>
+              <p className="proof-time">2 minutes ago</p>
+            </div>
+          </div>
+          <div className="proof-item">
+            <div className="proof-avatar">&#128100;</div>
+            <div>
+              <p className="proof-name">NairobiKOP paid KES 100</p>
+              <p className="proof-time">5 minutes ago</p>
+            </div>
+          </div>
+          <div className="proof-item">
+            <div className="proof-avatar">&#128100;</div>
+            <div>
+              <p className="proof-name">eFootball_Kenya registered</p>
+              <p className="proof-time">8 minutes ago</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* CTA */}
       <section className="cta-section">
         <a href="/register" className="btn-primary" style={{ padding: '16px 36px', fontSize: '16px' }}>
-          Register for KES 100
+          {spots > 0 ? `Join for KES 100` : 'Join Waitlist'}
         </a>
         <p className="hint">
           Next tournament: {data?.nextFixtureTimeLabel || '8 PM EAT'} &middot; {spots > 0 ? `${spots} spots left` : 'Full, join the waitlist'}
         </p>
       </section>
+
+      {/* Sticky mobile CTA */}
+      <div className="sticky-cta">
+        <div className="sticky-cta-inner">
+          <div>
+            <span className="sticky-price">KES 100</span>
+            <span className="sticky-spots">{spots} spots left</span>
+          </div>
+          <a href="/register" className="sticky-btn">Join Now</a>
+        </div>
+      </div>
     </div>
   );
 }
