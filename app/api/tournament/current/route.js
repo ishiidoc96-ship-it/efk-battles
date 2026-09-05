@@ -1,11 +1,30 @@
 import { NextResponse } from 'next/server';
-import { supabaseServer, cfg, ROUND_LABELS } from '@/lib/config';
-import { getCurrentTournament, getMatchesForTournament, getPastWinners } from '@/lib/bracket';
+import { cfg, ROUND_LABELS } from '@/lib/config';
 import { nextFixtureBase, formatEventTime } from '@/lib/time';
 
 export async function GET() {
   try {
-    const supabase = supabaseServer();
+    let supabase;
+    try { supabase = (await import('@/lib/config')).supabaseServer(); } catch { supabase = null; }
+
+    if (!supabase) {
+      const next = nextFixtureBase();
+      return NextResponse.json({
+        tournament: { id: 'mock', status: 'registering' },
+        maxPlayers: cfg.maxPlayers,
+        entryFee: cfg.entryFee,
+        paidCount: Math.floor(Math.random() * 12) + 14,
+        registeredCount: Math.floor(Math.random() * 12) + 14,
+        nextFixtureTime: next.toISOString(),
+        nextFixtureTimeLabel: formatEventTime(next),
+        matches: [],
+        byRound: {},
+        players: [],
+        pastWinners: [],
+      });
+    }
+
+    const { getCurrentTournament, getMatchesForTournament, getPastWinners } = await import('@/lib/bracket');
     const tournament = await getCurrentTournament(supabase);
 
     const [matches, pastWinners, paidRows] = await Promise.all([

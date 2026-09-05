@@ -7,11 +7,9 @@ export const metadata = {
   description: '100 KES eFootball Mobile tournaments. 32 players. 1 champion. Official Youth Esports Partner, Blaze by Safaricom.',
 };
 
-export const viewport = {
-  themeColor: '#FAFAF7',
-  width: 'device-width',
-  initialScale: 1,
-};
+export function generateViewport() {
+  return { themeColor: '#FAFAF7', width: 'device-width', initialScale: 1 };
+}
 
 export default function RootLayout({ children }) {
   return (
