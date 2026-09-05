@@ -36,21 +36,24 @@ img { max-width: 100%; height: auto; }
 /* Sponsor banner */
 .sponsor-bar {
   background: var(--green);
-  padding: 8px 0;
+  padding: 6px 0;
   overflow: hidden;
 }
 .sponsor-bar .container {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 8px;
+  justify-content: center;
+  gap: 12px;
   min-width: 0;
+  flex-wrap: nowrap;
 }
-.sponsor-bar img { height: 20px; width: auto; flex-shrink: 0; }
+.sponsor-bar img { height: 18px; width: auto; flex-shrink: 0; }
 .sponsor-bar span { font-size: 11px; font-weight: 600; color: #1A1A1A; white-space: nowrap; }
 @media (max-width: 480px) {
-  .sponsor-bar .container > div:last-child span { display: none; }
-  .sponsor-bar .container > div:last-child::after { content: 'Blaze by Safaricom'; font-size: 11px; font-weight: 600; color: #1A1A1A; }
+  .sponsor-bar { padding: 5px 0; }
+  .sponsor-bar .container { gap: 8px; }
+  .sponsor-bar img { height: 16px; }
+  .sponsor-bar span { font-size: 10px; }
 }
 
 /* Header */
@@ -67,8 +70,8 @@ img { max-width: 100%; height: auto; }
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding-top: 12px;
-  padding-bottom: 12px;
+  padding-top: 10px;
+  padding-bottom: 10px;
   position: relative;
   gap: 8px;
   min-width: 0;
@@ -83,7 +86,7 @@ img { max-width: 100%; height: auto; }
   flex-shrink: 0;
   min-width: 0;
 }
-.site-header .logo img { height: 24px; width: auto; flex-shrink: 0; }
+.site-header .logo img { height: 22px; width: auto; flex-shrink: 0; }
 .site-header .logo span { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .site-header nav { display: flex; align-items: center; gap: 20px; flex-shrink: 0; }
 .site-header nav a { font-size: 13px; font-weight: 500; color: var(--text-secondary); transition: color 0.15s; white-space: nowrap; }

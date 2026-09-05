@@ -2,12 +2,12 @@ export function SponsorBanner() {
   return (
     <div className="sponsor-bar">
       <div className="container">
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', minWidth: 0 }}>
-          <img src="/sponsors/efk-logo.png" alt="eFootball Battles KE" style={{ height: '20px', width: 'auto', objectFit: 'contain' }} />
-          <span style={{ fontSize: '11px', fontWeight: 700, color: '#1A1A1A', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>eFootball Battles KE</span>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '6px', minWidth: 0 }}>
+          <img src="/sponsors/efk-logo.png" alt="eFootball Battles KE" style={{ height: '18px', width: 'auto', objectFit: 'contain' }} />
+          <span style={{ fontSize: '11px', fontWeight: 700, color: '#1A1A1A', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>EFK Battles</span>
         </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '11px', fontWeight: 700, color: '#1A1A1A', flexShrink: 0 }}>
-          <img src="/sponsors/blaze-logo.png" alt="Blaze by Safaricom" style={{ height: '20px', width: 'auto', objectFit: 'contain' }} />
+          <img src="/sponsors/blaze-logo.png" alt="Blaze by Safaricom" style={{ height: '18px', width: 'auto', objectFit: 'contain' }} />
           <span style={{ whiteSpace: 'nowrap' }}>Blaze by Safaricom</span>
         </div>
       </div>
