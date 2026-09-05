@@ -111,7 +111,7 @@ export default function RegisterPage() {
         </button>
         {spotsLeft !== null && spotsLeft <= 10 && (
           <p style={{ fontSize: '12px', color: '#D84315', textAlign: 'center', marginTop: '8px', fontWeight: 500 }}>
-            This tournament sells out fast. Lock your spot now.
+            First come, first serve. This tournament sells out fast. Lock your spot now.
           </p>
         )}
       </form>

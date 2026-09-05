@@ -25,7 +25,7 @@ export default function FAQPage() {
         { q: 'Can I use an Airtel or Telkom number?', a: 'No. M-Pesa only works on Safaricom. Your number must be Safaricom (070X, 071X, 072X, 074X, 075X, 076X, 078X, 079X). The same number is used for both M-Pesa payment and WhatsApp notifications.' },
         { q: 'How does M-Pesa payment work?', a: 'After you click pay, Safaricom sends an STK push to your phone, the same prompt you get when paying any Lipa Na M-Pesa. Enter your PIN and the payment is processed automatically. The site detects it within a few seconds.' },
         { q: 'Can I register with two accounts?', a: 'No. One account per person per tournament. Duplicate registrations will be rejected.' },
-        { q: 'What if the bracket is full?', a: 'You can still register and pay, you\'ll be added to the waitlist. If a spot opens up, you\'re moved in automatically.' },
+        { q: 'What if the bracket is full?', a: 'Spots are first come, first serve. You can still register and pay, you\'ll be added to the waitlist. If a spot opens up, you\'re moved in automatically.' },
       ],
     },
     {

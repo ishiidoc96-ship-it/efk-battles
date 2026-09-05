@@ -55,7 +55,7 @@ export default function HowToPlayPage() {
       <div style={sectionStyle}>
         <h2 style={headingStyle}>Step 3: Get matched</h2>
         <p style={textStyle}>
-          Once 32 players have paid, the bracket is generated automatically. You&apos;ll receive a <strong>WhatsApp message</strong> on your Safaricom number with:
+          Spots are first come, first serve. Once 32 players have paid, the bracket is generated automatically. You&apos;ll receive a <strong>WhatsApp message</strong> on your Safaricom number with:
         </p>
         <ul style={ulStyle}>
           <li style={liStyle}>Your <strong>opponent&apos;s gamer tag</strong></li>

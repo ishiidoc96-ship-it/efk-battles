@@ -69,6 +69,9 @@ export default function LandingPage() {
               Pay KES 100 via M-Pesa, get matched, play on your phone,
               upload the result. Winner takes 50% of the pot.
             </p>
+            <p style={{ fontSize: '13px', fontWeight: 600, color: '#D84315', marginBottom: '12px' }}>
+              First come, first serve. Only 32 spots per tournament.
+            </p>
             <div className="hero-actions">
               <a href="/register" className="btn-primary">
                 {spots > 0 ? `Join ${spots > 10 ? 'Now' : 'Before It Fills'}` : 'Join Waitlist'}
@@ -76,10 +79,10 @@ export default function LandingPage() {
               <a href="/how-to-play" className="btn-secondary">How to Play</a>
             </div>
             <p className="urgency-text">
-              {spots > 20 && 'Filling fast. Last tournament sold out in 4 hours.'}
-              {spots > 10 && spots <= 20 && 'Almost half gone. Don\'t miss this one.'}
-              {spots > 0 && spots <= 10 && `Only ${spots} left. This will sell out tonight.`}
-              {spots === 0 && 'Sold out. Next tournament opens soon.'}
+              {spots > 20 && 'Filling fast. First come, first serve. Last tournament sold out in 4 hours.'}
+              {spots > 10 && spots <= 20 && 'Almost half gone. Spots are first come, first serve.'}
+              {spots > 0 && spots <= 10 && `Only ${spots} left. First come, first serve. This will sell out tonight.`}
+              {spots === 0 && 'Sold out. First come, first serve. Next tournament opens soon.'}
             </p>
           </div>
 
@@ -149,7 +152,7 @@ export default function LandingPage() {
           <div className="how-item">
             <h3>Play your match</h3>
             <p>
-              Once 32 players pay, the bracket generates. WhatsApp sends your
+              First come, first serve. Once 32 players pay, the bracket generates. WhatsApp sends your
               opponent and room code. Play on eFootball Mobile.
             </p>
           </div>
@@ -195,12 +198,12 @@ export default function LandingPage() {
           <div className="schedule-day">
             <div className="schedule-name">Monday</div>
             <div className="schedule-time">8:00 PM EAT</div>
-            <div className="schedule-detail">Registration closes 48h before</div>
+            <div className="schedule-detail">32 spots, first come first serve</div>
           </div>
           <div className="schedule-day">
             <div className="schedule-name">Wednesday</div>
             <div className="schedule-time">8:00 PM EAT</div>
-            <div className="schedule-detail">32 players, single elimination</div>
+            <div className="schedule-detail">Single elimination bracket</div>
           </div>
           <div className="schedule-day">
             <div className="schedule-name">Friday</div>
@@ -238,7 +241,7 @@ export default function LandingPage() {
         <div className="rules-grid">
           <div className="rule-item">
             <span className="rule-key">Format</span>
-            <span className="rule-val">Single elimination, 32 players</span>
+            <span className="rule-val">Single elimination, 32 players, first come first serve</span>
           </div>
           <div className="rule-item">
             <span className="rule-key">Match length</span>
