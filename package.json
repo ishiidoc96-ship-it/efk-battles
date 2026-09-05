@@ -1,0 +1,26 @@
+{
+  "name": "efk-battles",
+  "version": "1.0.0",
+  "private": true,
+  "description": "eFootball Kenya Battles - anonymous 100 KES mobile tournaments (M-Pesa + WhatsApp + Supabase)",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "server": "node server.js"
+  },
+  "dependencies": {
+    "@lipana/sdk": "^1.0.3",
+    "@supabase/supabase-js": "^2.115.0",
+    "@whiskeysockets/baileys": "^7.0.0-rc14",
+    "autoprefixer": "^10.4.21",
+    "express": "^4.21.2",
+    "nanoid": "^5.0.9",
+    "next": "15.5.25",
+    "pino": "^10.3.1",
+    "postcss": "^8.5.3",
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8",
+    "tailwindcss": "^3.4.17"
+  }
+}
