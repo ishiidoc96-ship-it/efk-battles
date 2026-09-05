@@ -22,17 +22,22 @@ export default function AdminPage() {
     } catch (err) { setMsg(err.message); }
   };
 
+  const WHATSAPP_BOT_URL = 'http://localhost:3002';
+
   const checkQR = async () => {
     try {
-      const res = await fetch('/api/whatsapp?action=status', { headers: { 'x-admin-password': pw } });
+      const res = await fetch(`${WHATSAPP_BOT_URL}/status`);
       const json = await res.json();
       if (json.qr) {
         setQrImage(json.qr);
         setShowQR(true);
+        setMsg('');
+      } else if (json.connected) {
+        setMsg('WhatsApp bot is connected!');
       } else {
-        setMsg(json.error || 'No QR available — start WhatsApp server first');
+        setMsg(json.error || 'Bot not running. Start it with: node whatsapp-server.js');
       }
-    } catch { setMsg('WhatsApp server not reachable'); }
+    } catch { setMsg('WhatsApp bot not running. Open a new terminal and run: node whatsapp-server.js'); }
   };
 
   useEffect(() => { if (authed) load(); }, [authed]);
@@ -136,11 +141,13 @@ export default function AdminPage() {
             <p style={{ fontSize: '11px', color: 'var(--text-muted)', marginTop: '8px' }}>Open WhatsApp &rarr; Settings &rarr; Linked Devices &rarr; Link a Device</p>
           </div>
         ) : (
-          <button className="form-btn" style={{ width: 'auto', padding: '10px 20px' }} onClick={checkQR}>Show WhatsApp QR</button>
+          <div>
+            <button className="form-btn" style={{ width: 'auto', padding: '12px 24px', marginBottom: '8px' }} onClick={checkQR}>Show WhatsApp QR</button>
+            <p style={{ fontSize: '11px', color: 'var(--text-muted)', marginTop: '8px' }}>
+              Run in a separate terminal: <code style={{ background: 'var(--surface-alt)', padding: '2px 6px', borderRadius: '4px' }}>node whatsapp-server.js</code>
+            </p>
+          </div>
         )}
-        <p style={{ fontSize: '11px', color: 'var(--text-muted)', marginTop: '8px' }}>
-          Baileys (free): scan QR with personal WhatsApp. No Meta app needed.
-        </p>
       </div>
     </div>
   );
