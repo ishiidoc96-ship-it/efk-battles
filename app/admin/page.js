@@ -103,12 +103,12 @@ export default function AdminPage() {
               </div>
               <div style={{ display: 'flex', gap: '4px' }}>
                 {(m.status === 'pending' || m.status === 'disputed') && m.player_a_player_id && (
-                  <button style={{ fontSize: '10px', fontWeight: 600, padding: '4px 10px', borderRadius: '4px', border: 'none', background: '#E8F5E9', color: '#2E7D32', cursor: 'pointer' }} onClick={() => doAction('approve', { match_id: m.id, winner_player_id: m.player_a_player_id })} disabled={!!loading}>A wins</button>
+                  <button style={{ fontSize: '11px', fontWeight: 600, padding: '6px 12px', minHeight: '32px', borderRadius: '6px', border: 'none', background: '#E8F5E9', color: '#2E7D32', cursor: 'pointer' }} onClick={() => doAction('approve', { match_id: m.id, winner_player_id: m.player_a_player_id })} disabled={!!loading}>A wins</button>
                 )}
                 {(m.status === 'pending' || m.status === 'disputed') && m.player_b_player_id && (
-                  <button style={{ fontSize: '10px', fontWeight: 600, padding: '4px 10px', borderRadius: '4px', border: 'none', background: '#E8F5E9', color: '#2E7D32', cursor: 'pointer' }} onClick={() => doAction('approve', { match_id: m.id, winner_player_id: m.player_b_player_id })} disabled={!!loading}>B wins</button>
+                  <button style={{ fontSize: '11px', fontWeight: 600, padding: '6px 12px', minHeight: '32px', borderRadius: '6px', border: 'none', background: '#E8F5E9', color: '#2E7D32', cursor: 'pointer' }} onClick={() => doAction('approve', { match_id: m.id, winner_player_id: m.player_b_player_id })} disabled={!!loading}>B wins</button>
                 )}
-                <button style={{ fontSize: '10px', fontWeight: 600, padding: '4px 10px', borderRadius: '4px', border: 'none', background: '#E3F2FD', color: '#1565C0', cursor: 'pointer' }} onClick={() => doAction('resend_fixture', { match_id: m.id })} disabled={!!loading}>Resend</button>
+                <button style={{ fontSize: '11px', fontWeight: 600, padding: '6px 12px', minHeight: '32px', borderRadius: '6px', border: 'none', background: '#E3F2FD', color: '#1565C0', cursor: 'pointer' }} onClick={() => doAction('resend_fixture', { match_id: m.id })} disabled={!!loading}>Resend</button>
               </div>
             </div>
           ))}
