@@ -99,8 +99,8 @@ export default function RegisterPage() {
         )}
       </div>
       <p style={{ fontSize: '13px', color: 'var(--text-muted)', marginBottom: '32px' }}>
-        New to this? Read the <a href="/how-to-play" style={{ textDecoration: 'underline', textUnderlineOffset: '2px' }}>step-by-step guide</a> first.
-        <br />Registration takes about 30 seconds. Payment is via an M-Pesa STK push on your phone.
+        New here? Read the <a href="/how-to-play" style={{ textDecoration: 'underline', textUnderlineOffset: '2px' }}>step-by-step guide</a> first.
+        <br />The whole thing takes about 30 seconds. You pay with a normal M-Pesa STK push on your phone.
       </p>
 
       <form onSubmit={handleSubmit} noValidate>
@@ -175,7 +175,7 @@ export default function RegisterPage() {
         </div>
         {error && <p className="form-error" style={{ marginBottom: '16px' }} role="alert">{error} <button type="button" onClick={() => setError('')} style={{ background: 'none', border: 'none', color: 'var(--text-muted)', textDecoration: 'underline', fontSize: '12px' }}>Dismiss</button></p>}
         <button type="submit" className="form-btn" disabled={submitting}>
-          {submitting ? 'Sending STK push…' : urgent ? 'Lock My Spot — KES 100' : 'Pay KES 100 with M-Pesa'}
+          {submitting ? 'Sending STK push…' : urgent ? 'Lock my spot · KES 100' : 'Pay KES 100 with M-Pesa'}
         </button>
         {urgent && (
           <p style={{ fontSize: '12px', color: 'var(--urgent)', textAlign: 'center', marginTop: '8px', fontWeight: 500 }}>

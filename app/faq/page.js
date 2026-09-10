@@ -63,7 +63,7 @@ export default function FAQPage() {
     <div className="container" style={{ paddingTop: '40px', paddingBottom: '64px', maxWidth: '700px' }}>
       <h1 style={{ fontSize: '24px', fontWeight: 700, marginBottom: '8px' }}>Frequently Asked Questions</h1>
       <p style={{ fontSize: '14px', color: 'var(--text-secondary)', marginBottom: '32px' }}>
-        Everything new players need to know. Also see the <a href="/how-to-play" style={{ textDecoration: 'underline', textUnderlineOffset: '2px' }}>step-by-step guide</a>.
+        Straight answers for new players. Want the walk-through instead? Try the <a href="/how-to-play" style={{ textDecoration: 'underline', textUnderlineOffset: '2px' }}>step-by-step guide</a>.
       </p>
 
       {sections.map((section, si) => (

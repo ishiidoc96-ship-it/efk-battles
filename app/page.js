@@ -2,20 +2,6 @@
 
 import { useState, useEffect } from 'react';
 
-const IconEye = (props) => (
-  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" {...props}>
-    <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7Z" />
-    <circle cx="12" cy="12" r="3" />
-  </svg>
-);
-
-const IconUser = (props) => (
-  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" {...props}>
-    <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" />
-    <circle cx="12" cy="7" r="4" />
-  </svg>
-);
-
 const IconPhone = (props) => (
   <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" {...props}>
     <rect x="7" y="2.5" width="10" height="19" rx="2" />
@@ -47,27 +33,25 @@ const IconTrophy = (props) => (
   </svg>
 );
 
+const TICKER = [
+  'Kick-off 20:00 EAT',
+  '32 spots · first come, first served',
+  'KES 100 in',
+  'KES 1,600 to the winner',
+  'M-Pesa only · Safaricom',
+  'Mon / Wed / Fri',
+  'Usikose · the bracket never waits',
+];
+
 export default function LandingPage() {
   const [data, setData] = useState(null);
   const [countdown, setCountdown] = useState({ d: 0, h: 0, m: 0, s: 0 });
-  const [playerCount, setPlayerCount] = useState(0);
 
   useEffect(() => {
     fetch('/api/tournament/current')
       .then((r) => r.json())
       .then(setData)
       .catch(() => {});
-  }, []);
-
-  useEffect(() => {
-    let count = 0;
-    const target = 18 + Math.floor(Math.random() * 8);
-    const timer = setInterval(() => {
-      count++;
-      setPlayerCount(count);
-      if (count >= target) clearInterval(timer);
-    }, 400);
-    return () => clearInterval(timer);
   }, []);
 
   useEffect(() => {
@@ -87,297 +71,398 @@ export default function LandingPage() {
     return () => clearInterval(id);
   }, [data?.nextFixtureTime]);
 
-  const spots = (data?.maxPlayers || 32) - (data?.paidCount || 0);
-  const pot = (data?.entryFee || 100) * (data?.maxPlayers || 32);
+  const maxPlayers = data?.maxPlayers || 32;
+  const paidCount = data?.paidCount || 0;
+  const entryFee = data?.entryFee || 100;
+  const spots = maxPlayers - paidCount;
+  const pot = entryFee * maxPlayers;
+  const winnerCut = Math.round(pot * 0.5);
+  const runnerCut = Math.round(pot * 0.2);
+  const platformCut = Math.round(pot * 0.3);
+  const pct = Math.min(100, Math.round((paidCount / maxPlayers) * 100));
+
+  const hasCountdown = data?.nextFixtureTime != null;
 
   return (
     <div className="container">
+      {/* Ticker */}
+      <div className="ticker" aria-hidden="true">
+        <div className="ticker-track">
+          {TICKER.map((t) => (
+            <span key={t} className="ticker-item">{t} ·</span>
+          ))}
+          {TICKER.map((t) => (
+            <span key={t + '-b'} className="ticker-item">{t} ·</span>
+          ))}
+        </div>
+      </div>
+
       {/* Hero */}
       <section className="hero">
         <div className="hero-layout">
           <div>
-            <div className="hero-badges">
-              <div className="spots">
+            <div className="hero-meta">
+              <span className="hero-line">
                 <span className="dot" />
-                {spots > 0
-                  ? `${spots} spots left`
-                  : 'Bracket full'}
+                NEXT: {data?.nextFixtureTimeLabel || '8 PM EAT'}
+              </span>
+              <span className="hero-line" style={{ color: 'var(--text-muted)' }}>
+                BRACKET CLOSES AT 20:00 EAT · {spots} SPOTS LEFT
+              </span>
+            </div>
+
+            <h1 className="display">
+              PAY 100. PLAY. THE LAST ONE STANDING TAKES <span className="hl">1,600.</span>
+            </h1>
+
+            <p className="hero-sub">
+              1v1 eFootball Mobile, straight from your phone. Pay <strong>KES 100</strong> with
+              M-Pesa, get paired with another Kenyan player, upload your result when it&apos;s
+              done. Winner walks with <strong>KES {winnerCut.toLocaleString()}</strong> to M-Pesa
+              within 24 hours. The bracket never waits.
+            </p>
+
+            <div className="progress" aria-live="polite">
+              <div className="progress-track">
+                <div className="progress-fill" style={{ width: `${pct}%` }} />
               </div>
-              <div className="player-count-badge">
-                <IconEye style={{ verticalAlign: 'middle' }} />
-                <span>{playerCount} players looking right now</span>
+              <div className="progress-label">
+                <span>{paidCount} of {maxPlayers} registered</span>
+                <span>pool: KES {pot.toLocaleString()}</span>
               </div>
             </div>
-            <h1 className="display">eFootball<br />Kenya Battles</h1>
-            <p>
-              Play 1v1 eFootball Mobile on your phone. Pay KES 100 with
-              M-Pesa, get matched against another Kenyan player, upload your
-              result. Winner takes <strong>KES 1,600</strong> — paid to your
-              M-Pesa within 24 hours.
-            </p>
-            <p className="urgency-text">
-              First come, first serve. Only 32 spots per tournament.
-            </p>
-            <div className="hero-actions">
+
+            <div className="hero-actions" style={{ marginTop: '20px' }}>
               <a href="/register" className="btn-primary">
-                {spots > 0 ? (spots <= 10 ? 'Join Now — Spots Running Out' : 'Join Now') : 'Join the Waitlist'}
+                {spots > 0 ? 'Get Your Spot · KES 100' : 'Join the Waitlist'}
               </a>
-              <a href="/how-to-play" className="btn-secondary">How to Play</a>
+              <a href="/how-to-play" className="btn-secondary">How it works</a>
             </div>
-            <p className="urgency-text" style={{ marginTop: '12px' }}>
-              {spots > 20 && 'Filling fast. Last tournament sold out in 4 hours.'}
-              {spots > 10 && spots <= 20 && 'Almost half gone. Spots are first come, first serve.'}
-              {spots > 0 && spots <= 10 && `Only ${spots} left. This will sell out tonight.`}
-              {spots === 0 && 'Sold out. Join the waitlist — you move in automatically if a spot opens.'}
+            <p className="urgency-text">
+              {spots > 20 && 'Filling up. Last one sold out in four hours.'}
+              {spots > 10 && spots <= 20 && 'Past half now. First come, first served.'}
+              {spots > 0 && spots <= 10 && `Only ${spots} left. When they go, they go.`}
+              {spots === 0 && 'Sold out. Join the waitlist and we move you in if a spot opens.'}
             </p>
+            {hasCountdown && (
+              <p className="tminus">
+                T-MINUS {String(countdown.d).padStart(2, '0')}:
+                {String(countdown.h).padStart(2, '0')}:
+                {String(countdown.m).padStart(2, '0')}:
+                {String(countdown.s).padStart(2, '0')} {data?.nextFixtureTimeLabel || ''}
+              </p>
+            )}
           </div>
 
-          <div className="hero-card">
-            <div className="stat-row">
-              <span className="stat-label">Winner</span>
-              <span className="stat-value green">KES 1,600</span>
+          {/* Entry ticket */}
+          <div className="entry-ticket" aria-label="Tournament payout summary">
+            <div className="entry-ticket-head">
+              <span>EFK Battle</span>
+              <span className="tk-right">1V1 · EFootball Mobile</span>
             </div>
-            <div className="stat-row">
-              <span className="stat-label">Runner-up</span>
-              <span className="stat-value">KES 640</span>
+            <div className="tk-winner">
+              <div className="tk-label">To the last one standing</div>
+              <div className="tk-amount">KES {winnerCut.toLocaleString()}</div>
+              <div className="tk-note">50% of the pool · paid on M-Pesa</div>
             </div>
-            <div className="stat-row">
-              <span className="stat-label">Total pot</span>
-              <span className="stat-value">KES {pot.toLocaleString()}</span>
+            <div className="tk-rows">
+              <div className="tk-row">
+                <span className="tk-k">Runner-up</span>
+                <span className="tk-v">KES {runnerCut.toLocaleString()} · 20%</span>
+              </div>
+              <div className="tk-row">
+                <span className="tk-k">Platform</span>
+                <span className="tk-v">KES {platformCut.toLocaleString()} · 30%</span>
+              </div>
+              <div className="tk-row">
+                <span className="tk-k">You pay</span>
+                <span className="tk-v">KES {entryFee}</span>
+              </div>
             </div>
-            <div className="stat-row">
-              <span className="stat-label">Entry</span>
-              <span className="stat-value">KES 100</span>
-            </div>
+            <div className="tk-foot">M-Pesa payout · within 24h of the final</div>
           </div>
         </div>
-      </section>
-
-      {/* Trust */}
-      <div className="trust-bar">
-        <div className="container">
-          <div className="trust-item">
-            <img src="/sponsors/mpesa-logo.png" alt="M-Pesa" width={90} height={36} style={{ height: '36px', width: 'auto', objectFit: 'contain' }} />
-            <span className="trust-label">Payments via Safaricom M-PESA</span>
-          </div>
-          <div className="trust-item">
-            <img src="/sponsors/blaze-logo.png" alt="Blaze by Safaricom" width={80} height={32} style={{ height: '32px', width: 'auto', objectFit: 'contain' }} />
-            <span className="trust-label">Official Youth Esports Partner</span>
-          </div>
-        </div>
-      </div>
-
-      {/* Countdown */}
-      <section className="section" aria-label="Countdown to next tournament">
-        <div className="countdown" role="timer" aria-label={data?.nextFixtureTimeLabel ? `Next tournament ${data.nextFixtureTimeLabel}` : 'Next tournament 8 PM EAT'}>
-          {[
-            { v: countdown.d, l: 'Days' },
-            { v: countdown.h, l: 'Hrs' },
-            { v: countdown.m, l: 'Min' },
-            { v: countdown.s, l: 'Sec' },
-          ].map((t) => (
-            <div key={t.l} className="countdown-unit">
-              <div className="countdown-num display">{String(t.v).padStart(2, '0')}</div>
-              <div className="countdown-label">{t.l}</div>
-            </div>
-          ))}
-        </div>
-        <p style={{ textAlign: 'center', marginTop: '10px', fontSize: '13px', color: 'var(--text-muted)' }}>
-          Next tournament: {data?.nextFixtureTimeLabel || '8 PM EAT'}
-        </p>
       </section>
 
       {/* How it works */}
-      <section className="section">
-        <h2 className="section-title">How it works</h2>
-        <div className="how-grid">
-          <div className="how-item">
-            <div style={{ color: 'var(--green-light)', marginBottom: '10px' }}>
-              <IconMoney width="26" height="26" />
-            </div>
-            <h3>Register and pay</h3>
-            <p>
-              Enter your gamer tag, eFootball ID, and Safaricom number.
-              Pay KES 100 with the M-Pesa STK push on your phone. Your spot is
-              locked the second payment confirms.
-            </p>
+      <section className="band band--tint" aria-label="How it works">
+        <div className="container">
+          <div className="section-head">
+            <div className="eyebrow">01 / The setup</div>
+            <h2>Four steps. All on your phone.</h2>
+            <p>No installs, no PC, no joining random rooms. The bracket does the matching for you.</p>
           </div>
-          <div className="how-item">
-            <div style={{ color: 'var(--green-light)', marginBottom: '10px' }}>
-              <IconPhone width="26" height="26" />
+
+          <div className="split">
+            <ol className="steps">
+              <li>
+                <div>
+                  <h3>Register and pay</h3>
+                  <p>Gamer tag, eFootball ID, Safaricom number. Pay <strong>KES 100</strong> with the STK push that lands on your phone.</p>
+                </div>
+              </li>
+              <li>
+                <div>
+                  <h3>Bracket locks at 8 PM</h3>
+                  <p>Once all 32 players are in, the bracket generates itself. We WhatsApp you your opponent and the 4-digit room code.</p>
+                </div>
+              </li>
+              <li>
+                <div>
+                  <h3>Play your match</h3>
+                  <p>2 x 4-minute halves in a Friend Match. Extra time and penalties if you&apos;re still level.</p>
+                </div>
+              </li>
+              <li>
+                <div>
+                  <h3>Upload the result</h3>
+                  <p>Screenshot the final score and submit it. When both players agree on the score, the next round locks in on its own.</p>
+                </div>
+              </li>
+            </ol>
+
+            <div className="chat-mock" role="img" aria-label="Example WhatsApp message: your opponent, room code and kick-off time">
+              <div className="chat-mock-head">
+                <span className="ava">EF</span>
+                <div>
+                  <div className="nm">EFK Battles</div>
+                  <div className="st">ONLINE</div>
+                </div>
+              </div>
+              <div className="chat-body">
+                <div className="bubble">
+                  Your bracket is live. 32 players in. Welcome.
+                  <span className="meta">19:58</span>
+                </div>
+                <div className="bubble">
+                  Match 12
+                  <br />vs <strong>Rongai Sniper</strong>
+                  <br />Room <span className="room">4821</span>
+                  <br />Kick-off: 8:00 PM EAT
+                  <br />Upload result here: <a href="/live">efk-battles.vercel.app/live</a>
+                  <span className="meta">19:59 · {new Date().getFullYear()}</span>
+                </div>
+                <div className="bubble user">
+                  Bet. Sending my result after the game.
+                  <span className="meta">20:01</span>
+                </div>
+              </div>
             </div>
-            <h3>Play your match</h3>
-            <p>
-              As soon as 32 players pay, the bracket generates automatically.
-              WhatsApp sends your opponent, a room code, and kick-off time.
-              Play on eFootball Mobile.
-            </p>
-          </div>
-          <div className="how-item">
-            <div style={{ color: 'var(--green-light)', marginBottom: '10px' }}>
-              <IconTrophy width="26" height="26" />
-            </div>
-            <h3>Upload and win</h3>
-            <p>
-              Screenshot your win and upload it. Matching scores lock in the next
-              round automatically. Champions get KES 1,600 via M-Pesa within 24 hours.
-            </p>
           </div>
         </div>
       </section>
 
-      {/* Prize breakdown */}
-      <section className="section" style={{ paddingTop: 0 }}>
-        <h2 className="section-title">Prize breakdown</h2>
-        <div className="prize-grid">
-          <div className="prize-card prize-winner">
-            <div className="prize-label">1st Place</div>
-            <div className="prize-amount">KES 1,600</div>
-            <div className="prize-pct">50% of pot</div>
+      {/* Bracket */}
+      <section className="band" aria-label="The bracket">
+        <div className="container">
+          <div className="section-head">
+            <div className="eyebrow">02 / The bracket</div>
+            <h2>16 → 8 → 4 → 2 → 1</h2>
+            <p>The bracket generates the second the 32nd player pays. Screenshot, upload, next round locks.</p>
           </div>
-          <div className="prize-card">
-            <div className="prize-label">2nd Place</div>
-            <div className="prize-amount">KES 640</div>
-            <div className="prize-pct">20% of pot</div>
+
+          <div className="mini-bracket">
+            {['Round of 16', 'Quarter', 'Semi', 'Final'].map((r) => (
+              <div key={r} className="m-round">
+                <div className="m-round-title">{r}</div>
+                <div className="m-match"><b>Seed 01</b><span>0 · 0</span></div>
+                <div className="m-match"><b>Seed 16</b><span>0 · 0</span></div>
+                <div className="m-match" style={{ opacity: 0.5 }}><b>Seed 08</b><span>- · -</span></div>
+                <div className="m-match" style={{ opacity: 0.5 }}><b>Seed 09</b><span>- · -</span></div>
+              </div>
+            ))}
+            <div className="m-round">
+              <div className="m-round-title">Champ</div>
+              <div className="m-match" style={{ borderColor: 'var(--green-dark)', background: 'var(--success-bg)' }}>
+                <b>???</b>
+                <span>last one standing</span>
+              </div>
+            </div>
           </div>
-          <div className="prize-card">
-            <div className="prize-label">Platform</div>
-            <div className="prize-amount">KES 960</div>
-            <div className="prize-pct">30% operations</div>
+
+          <div className="m-footer">
+            <span className="f-k">Full pool</span>
+            <span className="f-v">KES {pot.toLocaleString()}</span>
+            <span className="f-k" style={{ textAlign: 'right' }}>paid on M-Pesa within 24h of the final</span>
           </div>
+          <p style={{ fontSize: '12px', color: 'var(--text-muted)', marginTop: '12px' }}>
+            Placeholder structure. The real bracket shows on the <a href="/live" style={{ textDecoration: 'underline', textUnderlineOffset: '2px' }}>live bracket page</a> once the pool fills.
+          </p>
         </div>
-        <p style={{ fontSize: '13px', color: 'var(--text-muted)', textAlign: 'center', marginTop: '16px' }}>
-          Based on 32 players x KES 100 entry. Prizes paid via M-Pesa within 24 hours of the final.
-        </p>
       </section>
 
-      {/* Tournament schedule */}
-      <section className="section" style={{ paddingTop: 0 }}>
-        <h2 className="section-title">Tournament schedule</h2>
-        <div className="schedule-grid">
-          <div className="schedule-day">
-            <div className="schedule-name">Monday</div>
-            <div className="schedule-time">8:00 PM EAT</div>
-            <div className="schedule-detail">32 spots, first come first serve</div>
+      {/* The numbers */}
+      <section className="band band--edge" aria-label="Prize breakdown">
+        <div className="container">
+          <div className="split" style={{ alignItems: 'center' }}>
+            <div className="section-head" style={{ marginBottom: 0 }}>
+              <div className="eyebrow">03 / The numbers</div>
+              <h2>50% goes to the winner.<br />Written in the rules, not a vibe.</h2>
+              <p>32 players × KES 100 = KES {pot.toLocaleString()} pool. Split 50 / 20 / 30, no hidden fees, payouts on M-Pesa within 24 hours of the final.</p>
+            </div>
+            <div className="money-rows">
+              <div className="money-row winner">
+                <span className="m-k">1st place<small>50% of pool</small></span>
+                <span className="m-v">KES {winnerCut.toLocaleString()}</span>
+              </div>
+              <div className="money-row">
+                <span className="m-k">2nd place<small>20% of pool</small></span>
+                <span className="m-v">KES {runnerCut.toLocaleString()}</span>
+              </div>
+              <div className="money-row">
+                <span className="m-k">Platform<small>30% · runs the bracket</small></span>
+                <span className="m-v">KES {platformCut.toLocaleString()}</span>
+              </div>
+            </div>
           </div>
-          <div className="schedule-day">
-            <div className="schedule-name">Wednesday</div>
-            <div className="schedule-time">8:00 PM EAT</div>
-            <div className="schedule-detail">Single elimination bracket</div>
-          </div>
-          <div className="schedule-day">
-            <div className="schedule-name">Friday</div>
-            <div className="schedule-time">8:00 PM EAT</div>
-            <div className="schedule-detail">Winner announced same night</div>
+        </div>
+      </section>
+
+      {/* Schedule */}
+      <section className="band" aria-label="Tournament schedule">
+        <div className="container">
+          <div className="split" style={{ alignItems: 'start' }}>
+            <div className="section-head" style={{ marginBottom: 0 }}>
+              <div className="eyebrow">04 / The schedule</div>
+              <h2>Three nights a week. 8 PM sharp.</h2>
+              <p>Registration opens about 48 hours before each tournament and closes when the bracket is full or kick-off hits.</p>
+            </div>
+            <div className="sched">
+              <div className="sched-row">
+                <span className="d">Monday</span>
+                <span className="t">8:00 PM EAT</span>
+                <span className="n">32 spots, first come, first served</span>
+              </div>
+              <div className="sched-row">
+                <span className="d">Wednesday</span>
+                <span className="t">8:00 PM EAT</span>
+                <span className="n">Single-elimination bracket</span>
+              </div>
+              <div className="sched-row">
+                <span className="d">Friday</span>
+                <span className="t">8:00 PM EAT</span>
+                <span className="n">Champion paid within 24 hours</span>
+              </div>
+            </div>
           </div>
         </div>
       </section>
 
       {/* What you need */}
-      <section className="section" style={{ paddingTop: 0 }}>
-        <h2 className="section-title">What you need</h2>
-        <div className="needs-grid">
-          <div className="need-item">
-            <div className="need-icon" style={{ color: 'var(--green-light)' }}>
-              <IconPhone width="26" height="26" />
+      <section className="band band--tint" aria-label="What you need">
+        <div className="container">
+          <div className="split" style={{ alignItems: 'start' }}>
+            <div className="section-head" style={{ marginBottom: 0 }}>
+              <div className="eyebrow">05 / What you need</div>
+              <h2>Three things. That&apos;s the whole list.</h2>
             </div>
-            <h3>eFootball Mobile</h3>
-            <p>Free on Play Store / App Store. All matches are played on your phone, no PC needed.</p>
-          </div>
-          <div className="need-item">
-            <div className="need-icon" style={{ color: 'var(--green-light)' }}>
-              <IconChat width="26" height="26" />
+            <div className="need-list">
+              <div className="need-line">
+                <div className="ni"><IconPhone width="22" height="22" /></div>
+                <div>
+                  <h3>eFootball Mobile</h3>
+                  <p>Free on Play Store and App Store. All matches happen on your phone, no PC.</p>
+                </div>
+              </div>
+              <div className="need-line">
+                <div className="ni"><IconChat width="22" height="22" /></div>
+                <div>
+                  <h3>WhatsApp</h3>
+                  <p>We send fixtures, room codes and results here. Use the same number you registered with.</p>
+                </div>
+              </div>
+              <div className="need-line">
+                <div className="ni"><IconMoney width="22" height="22" /></div>
+                <div>
+                  <h3>Safaricom M-Pesa</h3>
+                  <p>You pay and get paid on M-Pesa. That means a Safaricom SIM, full stop.</p>
+                </div>
+              </div>
             </div>
-            <h3>WhatsApp</h3>
-            <p>Fixtures, room codes, and results arrive here. Must be active on the number you register.</p>
-          </div>
-          <div className="need-item">
-            <div className="need-icon" style={{ color: 'var(--green-light)' }}>
-              <IconMoney width="26" height="26" />
-            </div>
-            <h3>Safaricom M-Pesa</h3>
-            <p>Pay KES 100 via STK push. <strong>Must be a Safaricom SIM</strong> — M-Pesa only works on Safaricom.</p>
           </div>
         </div>
       </section>
 
       {/* Rules quick look */}
-      <section className="section" style={{ paddingTop: 0 }}>
-        <h2 className="section-title">Rules summary</h2>
-        <div className="rules-grid">
-          <div className="rule-item">
-            <span className="rule-key">Format</span>
-            <span className="rule-val">Single elimination, 32 players, first come first serve</span>
+      <section className="band band--deep" aria-label="Rules summary">
+        <div className="container">
+          <div className="section-head">
+            <div className="eyebrow">06 / Ground rules</div>
+            <h2>Short version.</h2>
           </div>
-          <div className="rule-item">
-            <span className="rule-key">Match length</span>
-            <span className="rule-val">2 x 4 min halves, 3 min extra time</span>
+          <div className="rules-grid">
+            <div className="rule-item">
+              <span className="rule-key">Format</span>
+              <span className="rule-val">Single elimination · 32 players · first come, first served</span>
+            </div>
+            <div className="rule-item">
+              <span className="rule-key">Match length</span>
+              <span className="rule-val">2 × 4 min halves · 3 min extra time</span>
+            </div>
+            <div className="rule-item">
+              <span className="rule-key">No-show</span>
+              <span className="rule-val">10 min past kick-off = walkover (0-3)</span>
+            </div>
+            <div className="rule-item">
+              <span className="rule-key">Disputes</span>
+              <span className="rule-val">Both upload screenshots · admin reviews</span>
+            </div>
+            <div className="rule-item">
+              <span className="rule-key">Cheating</span>
+              <span className="rule-val">Instant ban · entry fee forfeited</span>
+            </div>
+            <div className="rule-item">
+              <span className="rule-key">Refunds</span>
+              <span className="rule-val">Only if the tournament gets cancelled</span>
+            </div>
           </div>
-          <div className="rule-item">
-            <span className="rule-key">No-show</span>
-            <span className="rule-val">10 min after kick-off = walkover (0-3)</span>
-          </div>
-          <div className="rule-item">
-            <span className="rule-key">Disputes</span>
-            <span className="rule-val">Both players submit screenshots, admin reviews</span>
-          </div>
-          <div className="rule-item">
-            <span className="rule-key">Cheating</span>
-            <span className="rule-val">Instant ban, entry fee forfeited</span>
-          </div>
-          <div className="rule-item">
-            <span className="rule-key">Refunds</span>
-            <span className="rule-val">Only if tournament is cancelled</span>
-          </div>
+          <p style={{ fontSize: '12px', color: 'var(--text-muted)', marginTop: '16px' }}>
+            <a href="/terms" style={{ textDecoration: 'underline', textUnderlineOffset: '2px' }}>Full terms &amp; conditions</a>
+            {' '}·{' '}
+            <a href="/how-to-play" style={{ textDecoration: 'underline', textUnderlineOffset: '2px' }}>Step-by-step guide</a>
+          </p>
         </div>
-        <p style={{ fontSize: '13px', color: 'var(--text-muted)', textAlign: 'center', marginTop: '16px' }}>
-          <a href="/terms" style={{ textDecoration: 'underline', textUnderlineOffset: '2px' }}>Full Terms &amp; Conditions</a>
-          {' '}&middot;{' '}
-          <a href="/how-to-play" style={{ textDecoration: 'underline', textUnderlineOffset: '2px' }}>Step-by-step guide</a>
-        </p>
       </section>
 
-      {/* Social proof */}
-      <section className="section" style={{ paddingTop: 0 }}>
-        <div className="social-proof" aria-label="Recent registrations">
-          <div className="proof-item">
-            <div className="proof-avatar">
-              <IconUser />
+      {/* Stats strip */}
+      <section className="band" aria-label="Tournament status">
+        <div className="container">
+          <div className="stats-strip">
+            <div className="stat-cell">
+              <div className="sv">{paidCount} / {maxPlayers}</div>
+              <div className="sk">PAID FOR THIS TOURNAMENT</div>
             </div>
-            <div>
-              <p className="proof-name">Rongai Sniper just registered</p>
-              <p className="proof-time">2 minutes ago</p>
+            <div className="stat-cell">
+              <div className="sv">KES {pot.toLocaleString()}</div>
+              <div className="sk">FULL POOL</div>
             </div>
-          </div>
-          <div className="proof-item">
-            <div className="proof-avatar">
-              <IconUser />
-            </div>
-            <div>
-              <p className="proof-name">NairobiKOP paid KES 100</p>
-              <p className="proof-time">5 minutes ago</p>
-            </div>
-          </div>
-          <div className="proof-item">
-            <div className="proof-avatar">
-              <IconUser />
-            </div>
-            <div>
-              <p className="proof-name">eFootball_Kenya registered</p>
-              <p className="proof-time">8 minutes ago</p>
+            <div className="stat-cell">
+              <div className="sv">{data?.nextFixtureTimeLabel || '20:00 EAT'}</div>
+              <div className="sk">KICK-OFF · MON / WED / FRI</div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* CTA */}
-      <section className="cta-section">
-        <a href="/register" className="btn-primary">
-          {spots > 0 ? 'Join Now for KES 100' : 'Join the Waitlist'}
-        </a>
-        <p className="hint">
-          {spots > 0 ? `${spots} spots left · first come, first serve` : 'Full — join the waitlist and move in automatically'}
-        </p>
+      {/* Poster CTA */}
+      <section className="band band--edge" aria-label="Join the bracket">
+        <div className="container">
+          <div className="poster">
+            <div className="big">
+              KES <span className="hl">{winnerCut.toLocaleString()}</span> to the last<br />player standing.
+            </div>
+            <p className="sub">
+              KES 100 to get in and that&apos;s the whole entry fee. Safaricom number,
+              eFootball Mobile, WhatsApp. The bracket does the rest.
+            </p>
+            <a href="/register" className="btn-primary">
+              {spots > 0 ? `Pay KES 100 · Join the bracket` : 'Join the Waitlist'}
+            </a>
+            <p className="hint">
+              {spots > 0 ? `${spots} spots left · first come, first served` : 'Full · waitlist opens a spot for you automatically'}
+            </p>
+          </div>
+        </div>
       </section>
 
       {/* Sticky mobile CTA */}

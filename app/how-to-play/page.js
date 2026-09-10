@@ -16,7 +16,7 @@ export default function HowToPlayPage() {
     <div className="container" style={pageStyle}>
       <h1 style={{ fontSize: '22px', fontWeight: 700, marginBottom: '8px' }}>How to Play</h1>
       <p style={{ fontSize: '14px', color: 'var(--text-secondary)', marginBottom: '32px', lineHeight: '1.6' }}>
-        Everything you need to know to register, play, and win in your first EFK Battles tournament.
+        Straight steps for getting in, playing your match, and getting paid. No fluff.
       </p>
 
       <div style={sectionStyle}>
