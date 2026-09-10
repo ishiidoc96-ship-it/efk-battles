@@ -179,7 +179,7 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
 .mobile-nav { display: none; }
 .desktop-nav { display: flex; align-items: center; gap: 20px; }
 
-@media (max-width: 640px) {
+@media (max-width: 768px) {
   .desktop-nav { display: none; }
   .mobile-menu-btn { display: flex; }
   .mobile-nav {
@@ -592,6 +592,7 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
   flex-shrink: 0;
 }
 .sticky-btn:hover { background: var(--green-light); }
+@media (max-width: 768px) { .sticky-cta { display: block; } }
 
 /* Share box */
 .share-box {
@@ -635,8 +636,6 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
 
 /* Mobile bottom padding for sticky CTA */
 @media (max-width: 768px) { main { padding-bottom: 72px; } }
-
-/* Touch feedback */
 a, button, [role="button"] { -webkit-tap-highlight-color: transparent; }
 
 /* Prevent horizontal overflow */
@@ -1043,3 +1042,63 @@ html, body { overflow-x: hidden; }
 @media (min-width: 820px) { .split { grid-template-columns: 1fr 380px; gap: 48px; } }
 .split > :last-child { justify-self: center; }
 @media (min-width: 820px) { .split > :last-child { justify-self: end; } }
+
+/* ------------------------------------------------------------------
+   Mobile refinements (320px to tablet)
+------------------------------------------------------------------- */
+
+/* Stats strip stacks into rows on phones */
+@media (max-width: 639px) {
+  .stats-strip { grid-template-columns: 1fr; }
+  .stat-cell {
+    border-right: none;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 12px;
+    text-align: left;
+    padding: 14px 16px;
+  }
+  .stat-cell:last-child { border-bottom: none; }
+  .stat-cell .sv { font-size: 20px; }
+  .stat-cell .sk { margin-top: 0; }
+}
+
+/* Mini bracket + live bracket: touch-scroll, no fat scrollbar */
+.mini-bracket, .bracket-scroll { -webkit-overflow-scrolling: touch; }
+.mini-bracket::-webkit-scrollbar, .bracket-scroll::-webkit-scrollbar { display: none; }
+@media (max-width: 640px) {
+  .m-round { min-width: 96px; }
+  .m-match { padding: 6px 8px; }
+  .m-round-title { font-size: 9px; }
+}
+
+/* Tighten typography + spacing on small phones */
+@media (max-width: 420px) {
+  .hero { padding: 24px 0 20px; }
+  .hero h1 { font-size: 30px; }
+  .hero-sub { font-size: 14px; }
+  .tk-winner .tk-amount { font-size: 34px; }
+  .poster .big { font-size: 30px; }
+  .section-head h2 { font-size: 20px; }
+  .money-row .m-v { font-size: 18px; }
+}
+
+/* Poster CTA button must never overflow on the smallest screens */
+@media (max-width: 380px) {
+  .poster .btn-primary { white-space: normal; padding: 14px 20px; }
+  .hero-actions .btn-secondary { padding: 12px 18px; font-size: 14px; }
+}
+
+/* Ticker a touch smaller on phones */
+@media (max-width: 480px) {
+  .ticker { font-size: 10px; }
+  .ticker-item { padding: 8px 14px; }
+}
+
+/* Hero action buttons stay full-tap-friendly and never clip */
+.hero-actions .btn-primary, .hero-actions .btn-secondary { min-height: 48px; touch-action: manipulation; }
+
+/* Ensure the sticky CTA doesn't overlap page content on pages without scroll room */
+@media (max-width: 768px) { main { padding-bottom: 84px; } }
