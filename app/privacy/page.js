@@ -1,5 +1,6 @@
 export const metadata = {
   title: 'Privacy Policy — eFootball Battles KE',
+  description: 'How EFK Battles collects, uses, and protects your data — Safaricom number, gamer tag, eFootball ID, transaction IDs, and match history.',
 };
 
 export default function PrivacyPage() {

@@ -1,5 +1,6 @@
 export const metadata = {
   title: 'FAQ — eFootball Battles KE',
+  description: 'Answers for Kenyan players: how to register, M-Pesa payment, opponent matching, result disputes, and prize payouts for EFK Battles eFootball Mobile tournaments.',
 };
 
 export default function FAQPage() {
@@ -83,6 +84,22 @@ export default function FAQPage() {
         <p style={{ fontSize: '13px', color: 'var(--text-muted)', marginBottom: '16px' }}>Ready to play?</p>
         <a href="/register" className="form-btn" style={{ display: 'inline-block', width: 'auto', padding: '12px 32px', textDecoration: 'none' }}>Register for KES 100</a>
       </div>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'FAQPage',
+            mainEntity: sections.flatMap((s) =>
+              s.faqs.map((f) => ({
+                '@type': 'Question',
+                name: f.q,
+                acceptedAnswer: { '@type': 'Answer', text: f.a },
+              }))
+            ),
+          }),
+        }}
+      />
     </div>
   );
 }

@@ -77,7 +77,7 @@ export default function AdminPage() {
         <button onClick={load} style={{ fontSize: '13px', color: 'var(--text-secondary)', background: 'none', border: 'none', cursor: 'pointer' }}>Refresh</button>
       </div>
 
-      {msg && <p style={{ fontSize: '13px', color: msg.includes('—') && !msg.includes('done') ? '#D84315' : 'var(--green)', marginBottom: '16px' }}>{msg}</p>}
+      {msg && <p style={{ fontSize: '13px', color: msg.includes('—') && !msg.includes('done') ? 'var(--urgent)' : 'var(--green-light)', marginBottom: '16px' }}>{msg}</p>}
 
       {tournament && (
         <div style={{ marginBottom: '32px' }}>
@@ -89,7 +89,7 @@ export default function AdminPage() {
             <button className="form-btn" style={{ width: 'auto', padding: '10px 20px', background: 'var(--surface)', color: 'var(--text)', border: '1px solid var(--border)' }} onClick={() => doAction('resolve_noshows', { tournament_id: tournament.id })} disabled={!!loading}>
               Resolve no-shows
             </button>
-            <button className="form-btn" style={{ width: 'auto', padding: '10px 20px', background: '#FBE9E7', color: '#D84315', border: '1px solid #F5C6CB' }} onClick={() => { if (confirm('Reset?')) doAction('reset', { tournament_id: tournament.id }); }} disabled={!!loading}>
+            <button className="form-btn" style={{ width: 'auto', padding: '10px 20px', background: 'var(--danger-bg)', color: 'var(--urgent)', border: '1px solid rgba(255,112,67,0.4)' }} onClick={() => { if (confirm('Reset?')) doAction('reset', { tournament_id: tournament.id }); }} disabled={!!loading}>
               Reset
             </button>
           </div>
@@ -108,12 +108,12 @@ export default function AdminPage() {
               </div>
               <div style={{ display: 'flex', gap: '4px' }}>
                 {(m.status === 'pending' || m.status === 'disputed') && m.player_a_player_id && (
-                  <button style={{ fontSize: '11px', fontWeight: 600, padding: '6px 12px', minHeight: '32px', borderRadius: '6px', border: 'none', background: '#E8F5E9', color: '#2E7D32', cursor: 'pointer' }} onClick={() => doAction('approve', { match_id: m.id, winner_player_id: m.player_a_player_id })} disabled={!!loading}>A wins</button>
+                  <button style={{ fontSize: '11px', fontWeight: 600, padding: '6px 12px', minHeight: '32px', borderRadius: '6px', border: 'none', background: 'var(--success-bg)', color: 'var(--green-light)', cursor: 'pointer' }} onClick={() => doAction('approve', { match_id: m.id, winner_player_id: m.player_a_player_id })} disabled={!!loading}>A wins</button>
                 )}
                 {(m.status === 'pending' || m.status === 'disputed') && m.player_b_player_id && (
-                  <button style={{ fontSize: '11px', fontWeight: 600, padding: '6px 12px', minHeight: '32px', borderRadius: '6px', border: 'none', background: '#E8F5E9', color: '#2E7D32', cursor: 'pointer' }} onClick={() => doAction('approve', { match_id: m.id, winner_player_id: m.player_b_player_id })} disabled={!!loading}>B wins</button>
+                  <button style={{ fontSize: '11px', fontWeight: 600, padding: '6px 12px', minHeight: '32px', borderRadius: '6px', border: 'none', background: 'var(--success-bg)', color: 'var(--green-light)', cursor: 'pointer' }} onClick={() => doAction('approve', { match_id: m.id, winner_player_id: m.player_b_player_id })} disabled={!!loading}>B wins</button>
                 )}
-                <button style={{ fontSize: '11px', fontWeight: 600, padding: '6px 12px', minHeight: '32px', borderRadius: '6px', border: 'none', background: '#E3F2FD', color: '#1565C0', cursor: 'pointer' }} onClick={() => doAction('resend_fixture', { match_id: m.id })} disabled={!!loading}>Resend</button>
+                <button style={{ fontSize: '11px', fontWeight: 600, padding: '6px 12px', minHeight: '32px', borderRadius: '6px', border: 'none', background: 'rgba(33, 150, 243, 0.15)', color: '#64B5F6', cursor: 'pointer' }} onClick={() => doAction('resend_fixture', { match_id: m.id })} disabled={!!loading}>Resend</button>
               </div>
             </div>
           ))}

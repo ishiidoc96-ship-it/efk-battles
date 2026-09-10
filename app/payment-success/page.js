@@ -10,8 +10,10 @@ function PaymentSuccessContent() {
 
   return (
     <div className="container" style={{ maxWidth: '500px', paddingTop: '80px', textAlign: 'center' }}>
-      <div style={{ width: '64px', height: '64px', borderRadius: '50%', background: '#E8F5E9', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 24px' }}>
-        <span style={{ fontSize: '32px', color: '#2E7D32' }}>&#10003;</span>
+      <div style={{ width: '64px', height: '64px', borderRadius: '50%', background: 'var(--success-bg)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 24px' }}>
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--green-light)" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+          <path d="M20 6 9 17l-5-5" />
+        </svg>
       </div>
 
       <h1 style={{ fontSize: '24px', fontWeight: 700, marginBottom: '8px' }}>Payment Confirmed</h1>

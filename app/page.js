@@ -2,6 +2,51 @@
 
 import { useState, useEffect } from 'react';
 
+const IconEye = (props) => (
+  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" {...props}>
+    <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7Z" />
+    <circle cx="12" cy="12" r="3" />
+  </svg>
+);
+
+const IconUser = (props) => (
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" {...props}>
+    <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" />
+    <circle cx="12" cy="7" r="4" />
+  </svg>
+);
+
+const IconPhone = (props) => (
+  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" {...props}>
+    <rect x="7" y="2.5" width="10" height="19" rx="2" />
+    <line x1="10" y1="19" x2="14" y2="19" />
+  </svg>
+);
+
+const IconChat = (props) => (
+  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" {...props}>
+    <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5Z" />
+  </svg>
+);
+
+const IconMoney = (props) => (
+  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" {...props}>
+    <line x1="12" y1="1" x2="12" y2="23" />
+    <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
+  </svg>
+);
+
+const IconTrophy = (props) => (
+  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" {...props}>
+    <path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6" />
+    <path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18" />
+    <path d="M4 22h16" />
+    <path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22" />
+    <path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22" />
+    <path d="M18 2H6v7a6 6 0 0 0 12 0V2Z" />
+  </svg>
+);
+
 export default function LandingPage() {
   const [data, setData] = useState(null);
   const [countdown, setCountdown] = useState({ d: 0, h: 0, m: 0, s: 0 });
@@ -59,37 +104,38 @@ export default function LandingPage() {
                   : 'Bracket full'}
               </div>
               <div className="player-count-badge">
-                <span className="eye-icon">&#128065;</span>
-                {playerCount} players looking right now
+                <IconEye style={{ verticalAlign: 'middle' }} />
+                <span>{playerCount} players looking right now</span>
               </div>
             </div>
-            <h1>eFootball<br />Kenya Battles</h1>
+            <h1 className="display">eFootball<br />Kenya Battles</h1>
             <p>
-              1v1 eFootball Mobile tournaments for Kenyan players.
-              Pay KES 100 via M-Pesa, get matched, play on your phone,
-              upload the result. Winner takes 50% of the pot.
+              Play 1v1 eFootball Mobile on your phone. Pay KES 100 with
+              M-Pesa, get matched against another Kenyan player, upload your
+              result. Winner takes <strong>KES 1,600</strong> — paid to your
+              M-Pesa within 24 hours.
             </p>
-            <p style={{ fontSize: '13px', fontWeight: 600, color: '#D84315', marginBottom: '12px' }}>
+            <p className="urgency-text">
               First come, first serve. Only 32 spots per tournament.
             </p>
             <div className="hero-actions">
               <a href="/register" className="btn-primary">
-                {spots > 0 ? `Join ${spots > 10 ? 'Now' : 'Before It Fills'}` : 'Join Waitlist'}
+                {spots > 0 ? (spots <= 10 ? 'Join Now — Spots Running Out' : 'Join Now') : 'Join the Waitlist'}
               </a>
               <a href="/how-to-play" className="btn-secondary">How to Play</a>
             </div>
-            <p className="urgency-text">
-              {spots > 20 && 'Filling fast. First come, first serve. Last tournament sold out in 4 hours.'}
+            <p className="urgency-text" style={{ marginTop: '12px' }}>
+              {spots > 20 && 'Filling fast. Last tournament sold out in 4 hours.'}
               {spots > 10 && spots <= 20 && 'Almost half gone. Spots are first come, first serve.'}
-              {spots > 0 && spots <= 10 && `Only ${spots} left. First come, first serve. This will sell out tonight.`}
-              {spots === 0 && 'Sold out. First come, first serve. Next tournament opens soon.'}
+              {spots > 0 && spots <= 10 && `Only ${spots} left. This will sell out tonight.`}
+              {spots === 0 && 'Sold out. Join the waitlist — you move in automatically if a spot opens.'}
             </p>
           </div>
 
           <div className="hero-card">
             <div className="stat-row">
               <span className="stat-label">Winner</span>
-              <span className="stat-value" style={{ color: 'var(--green)' }}>KES 1,600</span>
+              <span className="stat-value green">KES 1,600</span>
             </div>
             <div className="stat-row">
               <span className="stat-label">Runner-up</span>
@@ -111,19 +157,19 @@ export default function LandingPage() {
       <div className="trust-bar">
         <div className="container">
           <div className="trust-item">
-            <img src="/sponsors/mpesa-logo.png" alt="M-Pesa" style={{ height: '36px', width: 'auto', objectFit: 'contain' }} />
+            <img src="/sponsors/mpesa-logo.png" alt="M-Pesa" width={90} height={36} style={{ height: '36px', width: 'auto', objectFit: 'contain' }} />
             <span className="trust-label">Payments via Safaricom M-PESA</span>
           </div>
           <div className="trust-item">
-            <img src="/sponsors/blaze-logo.png" alt="Blaze" style={{ height: '32px', width: 'auto', objectFit: 'contain' }} />
+            <img src="/sponsors/blaze-logo.png" alt="Blaze by Safaricom" width={80} height={32} style={{ height: '32px', width: 'auto', objectFit: 'contain' }} />
             <span className="trust-label">Official Youth Esports Partner</span>
           </div>
         </div>
       </div>
 
       {/* Countdown */}
-      <section className="section">
-        <div className="countdown">
+      <section className="section" aria-label="Countdown to next tournament">
+        <div className="countdown" role="timer" aria-label={data?.nextFixtureTimeLabel ? `Next tournament ${data.nextFixtureTimeLabel}` : 'Next tournament 8 PM EAT'}>
           {[
             { v: countdown.d, l: 'Days' },
             { v: countdown.h, l: 'Hrs' },
@@ -131,11 +177,14 @@ export default function LandingPage() {
             { v: countdown.s, l: 'Sec' },
           ].map((t) => (
             <div key={t.l} className="countdown-unit">
-              <div className="countdown-num">{String(t.v).padStart(2, '0')}</div>
+              <div className="countdown-num display">{String(t.v).padStart(2, '0')}</div>
               <div className="countdown-label">{t.l}</div>
             </div>
           ))}
         </div>
+        <p style={{ textAlign: 'center', marginTop: '10px', fontSize: '13px', color: 'var(--text-muted)' }}>
+          Next tournament: {data?.nextFixtureTimeLabel || '8 PM EAT'}
+        </p>
       </section>
 
       {/* How it works */}
@@ -143,24 +192,35 @@ export default function LandingPage() {
         <h2 className="section-title">How it works</h2>
         <div className="how-grid">
           <div className="how-item">
+            <div style={{ color: 'var(--green-light)', marginBottom: '10px' }}>
+              <IconMoney width="26" height="26" />
+            </div>
             <h3>Register and pay</h3>
             <p>
-              Enter your gamer tag, eFootball ID, WhatsApp, and M-Pesa number.
-              Pay KES 100 through the STK push on your phone.
+              Enter your gamer tag, eFootball ID, and Safaricom number.
+              Pay KES 100 with the M-Pesa STK push on your phone. Your spot is
+              locked the second payment confirms.
             </p>
           </div>
           <div className="how-item">
+            <div style={{ color: 'var(--green-light)', marginBottom: '10px' }}>
+              <IconPhone width="26" height="26" />
+            </div>
             <h3>Play your match</h3>
             <p>
-              First come, first serve. Once 32 players pay, the bracket generates. WhatsApp sends your
-              opponent and room code. Play on eFootball Mobile.
+              As soon as 32 players pay, the bracket generates automatically.
+              WhatsApp sends your opponent, a room code, and kick-off time.
+              Play on eFootball Mobile.
             </p>
           </div>
           <div className="how-item">
-            <h3>Upload the result</h3>
+            <div style={{ color: 'var(--green-light)', marginBottom: '10px' }}>
+              <IconTrophy width="26" height="26" />
+            </div>
+            <h3>Upload and win</h3>
             <p>
-              Screenshot your win. Upload it here. If both scores match, the
-              next round locks in automatically.
+              Screenshot your win and upload it. Matching scores lock in the next
+              round automatically. Champions get KES 1,600 via M-Pesa within 24 hours.
             </p>
           </div>
         </div>
@@ -187,7 +247,7 @@ export default function LandingPage() {
           </div>
         </div>
         <p style={{ fontSize: '13px', color: 'var(--text-muted)', textAlign: 'center', marginTop: '16px' }}>
-          Based on 32 players x KES 100 entry. Prizes paid via M-Pesa within 24 hours.
+          Based on 32 players x KES 100 entry. Prizes paid via M-Pesa within 24 hours of the final.
         </p>
       </section>
 
@@ -218,19 +278,25 @@ export default function LandingPage() {
         <h2 className="section-title">What you need</h2>
         <div className="needs-grid">
           <div className="need-item">
-            <div className="need-icon">&#128241;</div>
+            <div className="need-icon" style={{ color: 'var(--green-light)' }}>
+              <IconPhone width="26" height="26" />
+            </div>
             <h3>eFootball Mobile</h3>
-            <p>Free on Play Store / App Store. You play matches on your phone, no PC needed.</p>
+            <p>Free on Play Store / App Store. All matches are played on your phone, no PC needed.</p>
           </div>
           <div className="need-item">
-            <div className="need-icon">&#128172;</div>
+            <div className="need-icon" style={{ color: 'var(--green-light)' }}>
+              <IconChat width="26" height="26" />
+            </div>
             <h3>WhatsApp</h3>
-            <p>We send your fixtures, room codes, and results here. Must be active on your phone.</p>
+            <p>Fixtures, room codes, and results arrive here. Must be active on the number you register.</p>
           </div>
           <div className="need-item">
-            <div className="need-icon">&#128176;</div>
+            <div className="need-icon" style={{ color: 'var(--green-light)' }}>
+              <IconMoney width="26" height="26" />
+            </div>
             <h3>Safaricom M-Pesa</h3>
-            <p>Pay KES 100 via STK push. <strong>Must be a Safaricom SIM card</strong>. M-Pesa only works on Safaricom.</p>
+            <p>Pay KES 100 via STK push. <strong>Must be a Safaricom SIM</strong> — M-Pesa only works on Safaricom.</p>
           </div>
         </div>
       </section>
@@ -273,23 +339,29 @@ export default function LandingPage() {
 
       {/* Social proof */}
       <section className="section" style={{ paddingTop: 0 }}>
-        <div className="social-proof">
+        <div className="social-proof" aria-label="Recent registrations">
           <div className="proof-item">
-            <div className="proof-avatar">&#128100;</div>
+            <div className="proof-avatar">
+              <IconUser />
+            </div>
             <div>
               <p className="proof-name">Rongai Sniper just registered</p>
               <p className="proof-time">2 minutes ago</p>
             </div>
           </div>
           <div className="proof-item">
-            <div className="proof-avatar">&#128100;</div>
+            <div className="proof-avatar">
+              <IconUser />
+            </div>
             <div>
               <p className="proof-name">NairobiKOP paid KES 100</p>
               <p className="proof-time">5 minutes ago</p>
             </div>
           </div>
           <div className="proof-item">
-            <div className="proof-avatar">&#128100;</div>
+            <div className="proof-avatar">
+              <IconUser />
+            </div>
             <div>
               <p className="proof-name">eFootball_Kenya registered</p>
               <p className="proof-time">8 minutes ago</p>
@@ -300,11 +372,11 @@ export default function LandingPage() {
 
       {/* CTA */}
       <section className="cta-section">
-        <a href="/register" className="btn-primary" style={{ padding: '16px 36px', fontSize: '16px' }}>
-          {spots > 0 ? `Join for KES 100` : 'Join Waitlist'}
+        <a href="/register" className="btn-primary">
+          {spots > 0 ? 'Join Now for KES 100' : 'Join the Waitlist'}
         </a>
         <p className="hint">
-          Next tournament: {data?.nextFixtureTimeLabel || '8 PM EAT'} &middot; {spots > 0 ? `${spots} spots left` : 'Full, join the waitlist'}
+          {spots > 0 ? `${spots} spots left · first come, first serve` : 'Full — join the waitlist and move in automatically'}
         </p>
       </section>
 

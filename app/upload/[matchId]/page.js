@@ -55,7 +55,7 @@ export default function UploadPage() {
   };
 
   if (loading) return <div className="container" style={{ paddingTop: '60px', textAlign: 'center' }}><p style={{ color: 'var(--text-muted)' }}>Loading...</p></div>;
-  if (error && !match) return <div className="container" style={{ paddingTop: '60px', textAlign: 'center' }}><p style={{ color: '#D84315' }}>{error}</p></div>;
+  if (error && !match) return <div className="container" style={{ paddingTop: '60px', textAlign: 'center' }}><p style={{ color: 'var(--urgent)' }}>{error}</p></div>;
 
   if (result) return (
     <div className="container" style={{ maxWidth: '480px', paddingTop: '80px', textAlign: 'center' }}>
@@ -84,12 +84,12 @@ export default function UploadPage() {
       <div style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: '12px', padding: '16px', marginBottom: '24px' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px' }}>
           <span style={{ fontSize: '14px', fontWeight: 500 }}>A: {match.player_a_tag || 'TBD'}</span>
-          {match.a_uploaded && <span style={{ fontSize: '10px', fontWeight: 600, color: 'var(--green)', background: '#E8F5E9', padding: '2px 8px', borderRadius: '4px' }}>UPLOADED</span>}
+          {match.a_uploaded && <span style={{ fontSize: '10px', fontWeight: 600, color: 'var(--green-light)', background: 'var(--success-bg)', padding: '2px 8px', borderRadius: '4px' }}>UPLOADED</span>}
         </div>
         <div style={{ textAlign: 'center', fontSize: '10px', fontWeight: 600, color: 'var(--text-muted)', padding: '4px 0' }}>vs</div>
         <div style={{ display: 'flex', justifyContent: 'space-between' }}>
           <span style={{ fontSize: '14px', fontWeight: 500 }}>B: {match.player_b_tag || 'TBD'}</span>
-          {match.b_uploaded && <span style={{ fontSize: '10px', fontWeight: 600, color: 'var(--green)', background: '#E8F5E9', padding: '2px 8px', borderRadius: '4px' }}>UPLOADED</span>}
+          {match.b_uploaded && <span style={{ fontSize: '10px', fontWeight: 600, color: 'var(--green-light)', background: 'var(--success-bg)', padding: '2px 8px', borderRadius: '4px' }}>UPLOADED</span>}
         </div>
       </div>
 
@@ -121,7 +121,7 @@ export default function UploadPage() {
             <input type="file" accept="image/*" className="form-input" style={{ display: 'none' }} onChange={handleFile} />
           </label>
         </div>
-        {error && <p style={{ fontSize: '13px', color: '#D84315', marginBottom: '16px' }}>{error}</p>}
+        {error && <p className="form-error" style={{ marginBottom: '16px' }}>{error}</p>}
         <button type="submit" className="form-btn" disabled={submitting}>{submitting ? 'Uploading...' : 'Submit result'}</button>
       </form>
     </div>

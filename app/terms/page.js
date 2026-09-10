@@ -1,5 +1,6 @@
 export const metadata = {
   title: 'Terms & Conditions — eFootball Battles KE',
+  description: 'Rules for EFK Battles eFootball Mobile tournaments: eligibility, entry fees, tournament format, disputes, refunds, and payouts.',
 };
 
 export default function TermsPage() {

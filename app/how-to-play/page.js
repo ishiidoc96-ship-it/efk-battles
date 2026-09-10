@@ -1,5 +1,6 @@
 export const metadata = {
   title: 'How to Play — eFootball Battles KE',
+  description: 'Step-by-step guide for Kenyan players: register with M-Pesa, get matched, play 1v1 on eFootball Mobile, upload your result, and win real money.',
 };
 
 const pageStyle = { paddingTop: '32px', paddingBottom: '64px', maxWidth: '700px' };
@@ -26,7 +27,7 @@ export default function HowToPlayPage() {
           <li style={liStyle}><strong>WhatsApp</strong>, we send your fixtures, room codes, and results here. Must be active on the number you register.</li>
           <li style={liStyle}><strong>Safaricom M-Pesa</strong>, for the KES 100 entry fee and for receiving prize money if you win. <strong>Must be a Safaricom SIM card</strong>, M-Pesa only works on Safaricom.</li>
         </ul>
-        <div style={{ marginTop: '12px', padding: '12px 14px', background: '#FFF8E1', border: '1px solid #FFE082', borderRadius: '8px', fontSize: '13px', color: '#5D4037', lineHeight: '1.5' }}>
+        <div className="callout">
           <strong>Important:</strong> Your phone number must be Safaricom (070X, 071X, 072X, 074X, 075X, 076X, 078X, 079X). Airtel, Telkom, and other networks cannot be used for M-Pesa payments.
         </div>
       </div>
