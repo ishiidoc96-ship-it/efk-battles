@@ -14,6 +14,9 @@ export default function FAQPage() {
         { q: 'Why must I use Safaricom?', a: 'M-Pesa is a Safaricom service, it only works on Safaricom SIM cards. Airtel, Telkom, and other networks cannot use M-Pesa. Your phone number must be Safaricom (070X, 071X, 072X, 074X, 075X, 076X, 078X, 079X).' },
         { q: 'Is this affiliated with Konami?', a: 'No. eFootball Battles KE is an independent community tournament platform. eFootball is a trademark of Konami Digital Entertainment.' },
         { q: 'Who runs this?', a: 'eFootball Battles KE is operated in partnership with Blaze by Safaricom as an official youth esports initiative.' },
+        { q: 'Where do I download eFootball Mobile?', a: 'Free on Google Play and the App Store. Use the official Konami eFootball app (not clones). Direct links are on the How to Play page.' },
+        { q: 'Can I install EFK Battles on my phone?', a: 'Yes. Open the site in Chrome or Safari, then choose Install app / Add to Home Screen. It opens like a regular app so you can jump straight to the live bracket.' },
+        { q: 'Can I download the rules offline?', a: 'Yes. How to Play has a one-page rules PDF and a matchday checklist PDF you can save on your phone before kick-off.' },
       ],
     },
     {

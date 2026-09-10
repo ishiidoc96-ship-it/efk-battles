@@ -1,3 +1,5 @@
+import { StoreButtons, DownloadList } from '../components/Download';
+
 export const metadata = {
   title: 'How to Play — eFootball Battles KE',
   description: 'Step-by-step guide for Kenyan players: register with M-Pesa, get matched, play 1v1 on eFootball Mobile, upload your result, and win real money.',
@@ -27,6 +29,10 @@ export default function HowToPlayPage() {
           <li style={liStyle}><strong>WhatsApp</strong>, we send your fixtures, room codes, and results here. Must be active on the number you register.</li>
           <li style={liStyle}><strong>Safaricom M-Pesa</strong>, for the KES 100 entry fee and for receiving prize money if you win. <strong>Must be a Safaricom SIM card</strong>, M-Pesa only works on Safaricom.</li>
         </ul>
+        <div style={{ marginTop: '14px', marginBottom: '14px' }}>
+          <p style={{ ...textStyle, marginBottom: '10px', fontWeight: 600, color: 'var(--text)' }}>Download eFootball Mobile</p>
+          <StoreButtons />
+        </div>
         <div className="callout">
           <strong>Important:</strong> Your phone number must be Safaricom (070X, 071X, 072X, 074X, 075X, 076X, 078X, 079X). Airtel, Telkom, and other networks cannot be used for M-Pesa payments.
         </div>
@@ -109,6 +115,17 @@ export default function HowToPlayPage() {
         <h2 style={headingStyle}>No-shows</h2>
         <p style={textStyle}>
           If your opponent doesn&apos;t show up within 10 minutes of kick-off, you get a walkover win (3-0). If neither player shows up, both are eliminated.
+        </p>
+      </div>
+
+      <div style={sectionStyle}>
+        <h2 style={headingStyle}>Take it offline</h2>
+        <p style={textStyle}>
+          Save these on your phone before kick-off. Works without data when you&apos;re already in the match queue.
+        </p>
+        <DownloadList />
+        <p style={{ ...textStyle, marginTop: '12px', fontSize: '13px', color: 'var(--text-muted)' }}>
+          You can also install EFK Battles from your browser menu (Add to Home Screen / Install app) so the guide and live bracket open from your home screen.
         </p>
       </div>
 

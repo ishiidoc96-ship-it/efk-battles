@@ -80,6 +80,7 @@ app/
   live/page.js               # Live bracket view
   upload/[matchId]/page.js   # Screenshot upload + result
   admin/page.js              # Admin panel (password protected)
+  manifest.js                # PWA web app manifest
   api/
     register/route.js        # POST: create player
     pay/route.js             # POST: initiate STK push
@@ -92,6 +93,8 @@ app/
     cron/route.js            # GET: no-show resolution cron
   components/
     Bracket.jsx              # Shared bracket component
+    Pwa.jsx                  # Install banner + SW registration
+    Download.jsx             # Store buttons + PDF download rows
 
 lib/
   config.js                  # Env + Supabase client
@@ -104,6 +107,23 @@ lib/
   notify.js                  # WhatsApp message templates
 
 public/sponsors/             # Place your official sponsor logos here
+public/icons/                # PWA icons (192/512 + maskable + apple-touch)
+public/downloads/            # Offline PDFs: rules + matchday checklist
+public/sw.js                 # Service worker (installable PWA)
+```
+
+---
+
+## Installable PWA + downloads
+
+- Players can install the site from Chrome/Safari (**Install app** / **Add to Home Screen**).
+- Official eFootball Mobile store links live on Landing + How to Play.
+- Offline assets: `/downloads/efk-battles-rules.pdf` and `/downloads/efk-battles-matchday-checklist.pdf`.
+- Regenerate icons/PDFs after logo or rules changes:
+
+```bash
+python scripts/gen-icons.py
+python scripts/gen-pdfs.py
 ```
 
 ---

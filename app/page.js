@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { StoreButtons } from './components/Download';
 
 const IconPhone = (props) => (
   <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" {...props}>
@@ -193,7 +194,7 @@ export default function LandingPage() {
           <div className="section-head">
             <div className="eyebrow">01 / The setup</div>
             <h2>Four steps. All on your phone.</h2>
-            <p>No installs, no PC, no joining random rooms. The bracket does the matching for you.</p>
+            <p>No PC, no joining random rooms. The bracket does the matching for you. Optional: install this site to your home screen like an app.</p>
           </div>
 
           <div className="split">
@@ -365,6 +366,7 @@ export default function LandingPage() {
                 <div>
                   <h3>eFootball Mobile</h3>
                   <p>Free on Play Store and App Store. All matches happen on your phone, no PC.</p>
+                  <StoreButtons compact />
                 </div>
               </div>
               <div className="need-line">
