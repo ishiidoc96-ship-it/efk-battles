@@ -1102,3 +1102,35 @@ html, body { overflow-x: hidden; }
 
 /* Ensure the sticky CTA doesn't overlap page content on pages without scroll room */
 @media (max-width: 768px) { main { padding-bottom: 84px; } }
+
+/* Champion's wall */
+.champ-list { display: flex; flex-direction: column; max-width: 560px; }
+.champ-row {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  padding: 13px 4px;
+  border-bottom: 1px solid var(--border);
+  font-size: 14px;
+  flex-wrap: wrap;
+}
+.champ-row:last-child { border-bottom: none; }
+.champ-k {
+  font-family: 'Chakra Petch', 'DM Sans', sans-serif;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  min-width: 68px;
+}
+.champ-tag { font-weight: 700; color: var(--text); min-width: 120px; }
+.champ-event { font-size: 12px; color: var(--text-muted); }
+.champ-v {
+  margin-left: auto;
+  font-family: 'Chakra Petch', sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--green-light);
+  font-variant-numeric: tabular-nums;
+}

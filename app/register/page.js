@@ -182,6 +182,10 @@ export default function RegisterPage() {
             First come, first serve. This tournament sells out fast. Lock your spot now.
           </p>
         )}
+        <p style={{ fontSize: '11px', color: 'var(--text-muted)', textAlign: 'center', marginTop: '10px', lineHeight: '1.5' }}>
+          Tournament cancelled? Full KES 100 refund to your M-Pesa.
+          <br />Winner paid within 24h of the final, no exceptions.
+        </p>
       </form>
 
       <div style={{ marginTop: '24px', padding: '16px', background: 'var(--surface-alt)', borderRadius: '10px', border: '1px solid var(--border)' }}>

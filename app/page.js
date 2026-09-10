@@ -38,6 +38,7 @@ const TICKER = [
   '32 spots · first come, first served',
   'KES 100 in',
   'KES 1,600 to the winner',
+  '4 wins · KES 1,600',
   'M-Pesa only · Safaricom',
   'Mon / Wed / Fri',
   'Usikose · the bracket never waits',
@@ -82,6 +83,8 @@ export default function LandingPage() {
   const pct = Math.min(100, Math.round((paidCount / maxPlayers) * 100));
 
   const hasCountdown = data?.nextFixtureTime != null;
+  const champions = data?.pastWinners || [];
+  const ke = new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
 
   return (
     <div className="container">
@@ -258,7 +261,7 @@ export default function LandingPage() {
           <div className="section-head">
             <div className="eyebrow">02 / The bracket</div>
             <h2>16 → 8 → 4 → 2 → 1</h2>
-            <p>The bracket generates the second the 32nd player pays. Screenshot, upload, next round locks.</p>
+            <p>Four wins, maximum. Win four matches and the KES 1,600 is yours. The bracket generates the second the 32nd player pays.</p>
           </div>
 
           <div className="mini-bracket">
@@ -441,6 +444,33 @@ export default function LandingPage() {
               <div className="sk">KICK-OFF · MON / WED / FRI</div>
             </div>
           </div>
+        </div>
+      </section>
+
+      {/* Champion's wall */}
+      <section className="band band--tint" aria-label="Recent champions">
+        <div className="container">
+          <div className="section-head">
+            <div className="eyebrow">07 / Champion&apos;s wall</div>
+            <h2>People get paid here.</h2>
+            <p>No hype, no promises on daydreams. Champions take KES 1,600 to M-Pesa within 24 hours of the final. Full stop.</p>
+          </div>
+          {champions.length > 0 ? (
+            <div className="champ-list">
+              {champions.map((c) => (
+                <div key={(c.created_at || '') + (c.name || '')} className="champ-row">
+                  <span className="champ-k">Champion</span>
+                  <span className="champ-tag">{c.champion_tag || 'Anonymous'}</span>
+                  <span className="champ-event">{c.name || ''}{c.created_at ? ` · ${ke.format(new Date(c.created_at))}` : ''}</span>
+                  <span className="champ-v">KES {winnerCut.toLocaleString()}</span>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <p style={{ fontSize: '14px', color: 'var(--text-secondary)', maxWidth: '420px', lineHeight: '1.6' }}>
+              The wall goes live the night the first champion gets paid. Could be you, tonight at 20:00 EAT.
+            </p>
+          )}
         </div>
       </section>
 
